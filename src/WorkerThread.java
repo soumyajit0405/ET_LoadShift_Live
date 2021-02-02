@@ -1,4 +1,4 @@
-package com.SI.loadshift;
+
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -31,13 +31,13 @@ class WorkerThread implements Runnable {
 					System.out.println("List of run workers");
 					executor.execute(worker);// calling execute method of ExecutorService
 				}
-				sdc.updateEventStatus(eventId);
+				//sdc.updateEventStatus(eventId);
 				executor.shutdown();
 				while (!executor.isTerminated()) {
 				}
 				
 			}
-			sdc.updateEventStatus(eventId);
+			//sdc.updateEventStatus(eventId);
 
 			
 	} catch (ClassNotFoundException e) {

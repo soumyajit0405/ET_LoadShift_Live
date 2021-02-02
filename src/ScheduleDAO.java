@@ -1,4 +1,4 @@
-package com.SI.loadshift;
+
 
 
 import java.sql.Connection;
@@ -30,8 +30,8 @@ public class ScheduleDAO {
 		 }
 		//	System.out.println("select aso.sell_order_id,ubc.private_key,ubc.public_key,abc.order_id from all_sell_orders aso,all_blockchain_orders abc, user_blockchain_keys ubc where aso.transfer_start_ts ='"+date+" "+time+"' and abc.general_order_id=aso.sell_order_id and abc.order_type='SELL_ORDER' and ubc.user_id  = aso.seller_id and aso.order_status_id=1");
 		 // String query="select aso.sell_order_id,ubc.private_key,ubc.public_key,abc.order_id,abc.all_blockchain_orders_id from all_sell_orders aso,all_blockchain_orders abc, user_blockchain_keys ubc where aso.transfer_start_ts ='"+date+" "+time+"' and abc.general_order_id=aso.sell_order_id and abc.order_type='SELL_ORDER' and ubc.user_id  = aso.seller_id and aso.order_status_id=3";
-		 	String query="select a.event_id from all_events a where  a.event_status_id= 8 and a.event_end_time ='"+date+" "+time+"' and a.event_type_id = 1";
-		//	String query="select a.event_id from all_events a where  a.event_status_id= 8 and a.event_end_time ='2020-10-18 14:45:00'";
+		 String query="select a.event_id from all_events a where  a.event_status_id= 2 and a.event_end_time ='"+date+" "+time+"' and a.event_type_id = 2";
+		 //String query="select a.event_id from all_events a where  a.event_status_id= 8 and a.event_end_time ='2020-12-03 20:15:00' and a.event_type_id = 2";
 			pstmt=con.prepareStatement(query);
 		// pstmt.setString(1,controllerId);
 		 ResultSet rs= pstmt.executeQuery();
@@ -115,7 +115,7 @@ public class ScheduleDAO {
 			if (con == null) {
 				con = JDBCConnection.getOracleConnection();
 			}
-			String query = "select customer_id,event_customer_mapping_id from event_customer_mapping where event_id="+eventId +" and  event_customer_status_id=13";
+			String query = "select customer_id,event_customer_mapping_id from event_customer_mapping where event_id="+eventId +" and  event_customer_status_id=3";
 			pstmt = con.prepareStatement(query);
 			// pstmt.setString(1,controllerId);
 			ResultSet rs = pstmt.executeQuery();
@@ -269,5 +269,24 @@ public class ScheduleDAO {
 
 		}
 
+
+		public int getConfigValue(String name) throws ClassNotFoundException, SQLException {
+			PreparedStatement pstmt = null;
+			int value=0;
+			ArrayList<HashMap<String,Object>> customerData = new ArrayList<>();
+			if (con == null) {
+				con = JDBCConnection.getOracleConnection();
+			}
+			String query="select value from general_config where name=? ";
+			  pstmt=ScheduleDAO.con.prepareStatement(query);
+			  pstmt.setString(1,name);  
+			  ResultSet rs = pstmt.executeQuery();
+			  while(rs.next()) {
+				  value = Integer.parseInt(rs.getString("value"));
+			 }
+			
+			return value;
+
+		}
 
 }
